@@ -1,0 +1,43 @@
+---
+---
+<!-- Sección Informativa: ¿Qué debo llevar? con botones y gráfico lateral -->
+<section class="info-section">
+  <div class="max-w-6xl mx-auto px-6 md:px-8 grid md:grid-cols-2 gap-8 items-center">
+    <div class="info-left reveal-left">
+      <h2 class="info-title">¿Qué debo llevar?</h2>
+      <ul class="info-list mt-5">
+        <li>Mochila y ropa de cambio</li>
+        <li>Colcha y abrigo</li>
+        <li>Útiles de aseo</li>
+        <li>Cuaderno de apuntes</li>
+        <li>Lo más importante: tu BIBLIA</li>
+      </ul>
+
+      <div class="info-buttons mt-8 flex flex-col gap-4">
+        <a href="/lineamientos.pdf" class="btn-download" download>Descargar LINEAMIENTOS MISION70</a>
+        <a href="/carta_autorizacion.pdf" class="btn-download" download>Descargar CARTA DE AUTORIZACIÓN</a>
+      </div>
+    </div>
+
+    <div class="info-graphic reveal-right">
+      <img src="/hero.png" alt="Ilustración" class="info-image" />
+    </div>
+  </div>
+</section>
+
+<script type="module">
+  // Intersection Observer para revelar elementos desde los lados al hacer scroll
+  const revealOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
+    })
+  }, revealOptions);
+
+  document.querySelectorAll('.reveal-left, .reveal-right').forEach(el=>{
+    observer.observe(el);
+  });
+</script>

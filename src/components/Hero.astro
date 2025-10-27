@@ -1,0 +1,103 @@
+---
+---
+<!-- Hero: usa /fondo.svg como fondo, hero.png centrado y lados.png duplicado a ambos costados -->
+<section class="hero-section relative bg-[url('/fondo.svg')] bg-cover bg-center min-h-[60vh] md:min-h-[72vh] flex items-center justify-center overflow-hidden">
+  <!-- Lado izquierdo (oculto en móviles) - reducido para menor protagonismo -->
+  <img src="/lados.png" alt="decoración lateral izquierda" class="hero-side left-side hidden md:block absolute left-0 h-40 md:h-72 lg:h-[380px] object-contain -translate-x-6" />
+
+  <!-- Imagen principal centrada -->
+  <div class="z-20 flex flex-col items-center justify-center">
+    <img src="/hero.png" alt="Hero" class="hero-center w-56 md:w-[520px] lg:w-[640px] mx-auto" />
+
+  <!-- Contador de cuenta regresiva (sin bordes) -->
+  <!-- Para que el contador calcule automáticamente el próximo viernes a las 16:00 en tu zona, dejamos este valor especial: -->
+  <div id="countdown" data-target="auto-next-friday-16:00" class="countdown-wrap flex flex-col items-center gap-3">
+      <div class="countdown-numbers flex items-center gap-3 text-white text-2xl md:text-4xl font-extrabold tracking-tight">
+        <span id="cd-days">0</span>
+        <span class="cd-sep">:</span>
+        <span id="cd-hours">00</span>
+        <span class="cd-sep">:</span>
+        <span id="cd-mins">00</span>
+        <span class="cd-sep">:</span>
+        <span id="cd-secs">00</span>
+      </div>
+      <button formsappId="68bfbca9ed8efa0002d151a0"></button>
+<script src="https://forms.app/cdn/embed.js" type="text/javascript" async defer onload="new formsapp('68bfbca9ed8efa0002d151a0', 'popup', {'overlay':'rgba(45,45,45,0.5)','button':{'color':'#0c81b0','text':'INSCRIBIRSE  AHORA'},'width':'800px','height':'600px','openingAnimation':{'entrance':'animate__fadeIn','exit':'animate__fadeOut'}}, 'https://3lcat0n8.forms.app');"></script>
+    </div>
+  </div>
+
+  <!-- Lado derecho (espejado) -->
+  <img src="/lados.png" alt="decoración lateral derecha" class="hero-side right-side hidden md:block absolute right-0 h-40 md:h-72 lg:h-[380px] object-contain translate-x-6 -scale-x-100" />
+
+  <!-- Opcional: un overlay sutil para mejorar contraste -->
+  <div class="absolute inset-0 pointer-events-none bg-linear-to-b from-transparent via-black/10 to-black/20"></div>
+  
+  <script type="module">
+    // Contador sencillo: lee la fecha objetivo desde el atributo data-target en #countdown
+    const root = document.getElementById('countdown');
+    if (root) {
+      let targetStr = root.dataset.target || '';
+
+      // Si usamos el valor especial auto-next-friday-16:00 calculamos la próxima fecha de viernes a las 16:00
+      if (targetStr && targetStr.startsWith('auto-next-friday')) {
+        // formato esperado: auto-next-friday-HH:MM (por defecto 16:00)
+        const parts = targetStr.split('-');
+        const timePart = parts[parts.length - 1] || '16:00';
+        const [hourStr, minStr] = timePart.split(':');
+        const targetHour = parseInt(hourStr || '16', 10);
+        const targetMin = parseInt(minStr || '0', 10);
+
+        const now = new Date();
+        const todayWeekday = now.getDay(); // 0 Domingo .. 5 Viernes .. 6 Sabado
+        const friday = 5;
+        let daysUntil = (friday - todayWeekday + 7) % 7;
+
+        // Si hoy es viernes, asegurarnos de que si la hora pasada ya ocurrió, vamos al siguiente viernes
+        const candidate = new Date(now);
+        candidate.setDate(now.getDate() + daysUntil);
+        candidate.setHours(targetHour, targetMin, 0, 0);
+        if (candidate <= now) {
+          daysUntil = daysUntil === 0 ? 7 : daysUntil;
+        }
+
+        const targetDate = new Date(now);
+        targetDate.setDate(now.getDate() + daysUntil);
+        targetDate.setHours(targetHour, targetMin, 0, 0);
+        // usamos la fecha en la zona local del navegador
+        var target = targetDate;
+      } else {
+        // valor directo (ISO) — el navegador interpretará la zona si incluye Z o offset
+        var target = new Date(targetStr || new Date(Date.now() + 1000 * 60 * 60 * 24 * 7));
+      }
+
+      const daysEl = document.getElementById('cd-days');
+      const hoursEl = document.getElementById('cd-hours');
+      const minsEl = document.getElementById('cd-mins');
+      const secsEl = document.getElementById('cd-secs');
+
+      function pad(n) { return String(n).padStart(2, '0') }
+
+      function update() {
+        const now2 = new Date();
+        let diff = Math.max(0, target - now2);
+        const secs = Math.floor(diff / 1000) % 60;
+        const mins = Math.floor(diff / 1000 / 60) % 60;
+        const hours = Math.floor(diff / 1000 / 60 / 60) % 24;
+        const days = Math.floor(diff / 1000 / 60 / 60 / 24);
+
+        if (daysEl) daysEl.textContent = days;
+        if (hoursEl) hoursEl.textContent = pad(hours);
+        if (minsEl) minsEl.textContent = pad(mins);
+        if (secsEl) secsEl.textContent = pad(secs);
+
+        if (diff <= 0) {
+          // evento iniciado
+          clearInterval(timer);
+        }
+      }
+
+      update();
+      const timer = setInterval(update, 1000);
+    }
+  </script>
+</section>

@@ -1,0 +1,105 @@
+---
+---
+<section class="py-8 bg-[#06121a] text-white">
+  <div class="max-w-6xl mx-auto px-4">
+  <div class="w-full flex justify-center items-center my-8">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-center mx-auto">Equipo PH el salvador</h2>
+  </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      <figure class="team-figure h-40 sm:h-44 md:h-48">
+        <button class="team-button w-full h-full" data-src="/1.png" aria-label="ver imagen 1">
+          <img src="/1.png" alt="Equipo 1" loading="lazy" class="team-img" />
+        </button>
+      </figure>
+
+      <figure class="team-figure h-40 sm:h-44 md:h-48">
+        <button class="team-button w-full h-full" data-src="/2.png" aria-label="ver imagen 2">
+          <img src="/2.png" alt="Equipo 2" loading="lazy" class="team-img" />
+        </button>
+      </figure>
+
+      <figure class="team-figure h-40 sm:h-44 md:h-48">
+        <button class="team-button w-full h-full" data-src="/3.png" aria-label="ver imagen 3">
+          <img src="/3.png" alt="Equipo 3" loading="lazy" class="team-img" />
+        </button>
+      </figure>
+
+      <figure class="team-figure h-40 sm:h-44 md:h-48">
+        <button class="team-button w-full h-full" data-src="/4.png" aria-label="ver imagen 4">
+          <img src="/4.png" alt="Equipo 4" loading="lazy" class="team-img" />
+        </button>
+      </figure>
+
+      <figure class="team-figure h-40 sm:h-44 md:h-48">
+        <button class="team-button w-full h-full" data-src="/5.png" aria-label="ver imagen 5">
+          <img src="/5.png" alt="Equipo 5" loading="lazy" class="team-img" />
+        </button>
+      </figure>
+
+      <figure class="team-figure h-40 sm:h-44 md:h-48">
+        <button class="team-button w-full h-full" data-src="/6.png" aria-label="ver imagen 6">
+          <img src="/6.png" alt="Equipo 6" loading="lazy" class="team-img" />
+        </button>
+      </figure>
+
+      <figure class="team-figure h-40 sm:h-44 md:h-48">
+        <button class="team-button w-full h-full" data-src="/7.png" aria-label="ver imagen 7">
+          <img src="/7.png" alt="Equipo 7" loading="lazy" class="team-img" />
+        </button>
+      </figure>
+
+      <figure class="team-figure h-40 sm:h-44 md:h-48">
+        <button class="team-button w-full h-full" data-src="/8.png" aria-label="ver imagen 8">
+          <img src="/8.png" alt="Equipo 8" loading="lazy" class="team-img" />
+        </button>
+      </figure>
+    </div>
+  </div>
+
+  <div id="team-modal" class="team-modal hidden" role="dialog" aria-modal="true">
+    <button id="modal-close" class="modal-close" aria-label="cerrar ventana">✕</button>
+    <div class="modal-card">
+      <img id="modal-img" class="modal-img" src="" alt="Imagen ampliada" />
+    </div>
+  </div>
+
+  <script type="module">
+    // Defensive, evita errores si el DOM cambia o el script se ejecuta antes
+    const buttons = Array.from(document.querySelectorAll('.team-button'));
+    const modal = document.getElementById('team-modal');
+    const modalImg = document.getElementById('modal-img');
+    const closeBtn = document.getElementById('modal-close');
+    let lastFocused = null;
+
+    function openModal(src){
+      if(!modal || !modalImg) return;
+      lastFocused = document.activeElement;
+      modalImg.src = src || '';
+      modal.classList.remove('hidden');
+      document.documentElement.classList.add('modal-open');
+      // focus close button for accessibility if available
+      if(closeBtn) closeBtn.focus();
+    }
+
+    function closeModal(){
+      if(!modal || !modalImg) return;
+      modal.classList.add('hidden');
+      modalImg.src = '';
+      document.documentElement.classList.remove('modal-open');
+      if(lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+    }
+
+    // Attach handlers only if we have buttons
+    if(buttons.length && modal){
+      buttons.forEach(btn=>{
+        btn.addEventListener('click', ()=> openModal(btn.dataset.src));
+      });
+
+      if(closeBtn) closeBtn.addEventListener('click', closeModal);
+
+      modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); });
+
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeModal(); });
+    }
+  </script>
+</section>
